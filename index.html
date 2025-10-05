@@ -1,142 +1,32 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Видео с двигаемой лентой рейтинга</title>
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        background: #000;
-        overflow: hidden;
-      }
+<div class="rating-slider">
+  <input type="range" min="-5" max="5" value="0" id="slider">
+</div>
 
-      video {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
-        border: none;
-        outline: none;
-        z-index: 1;
-      }
-
-      /* ⭐ Лента рейтинга */
-      .rating-bar {
-        position: fixed;
-        bottom: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-        background: rgba(0, 0, 0, 0.45);
-        padding: 10px 12px;
-        border-radius: 12px;
-        backdrop-filter: blur(8px);
-        z-index: 10;
-        max-width: 90vw;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        cursor: grab;
-        touch-action: none; /* важно для мобильных */
-      }
-
-      .rating-btn {
-        flex: 0 0 auto;
-        background: rgba(255, 255, 255, 0.15);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 8px;
-        padding: 6px 12px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .rating-btn.active {
-        background: rgba(255, 255, 255, 0.85);
-        color: #000;
-        font-weight: bold;
-      }
-    </style>
-  </head>
-  <body>
-    <video autoplay muted playsinline loop>
-      <source
-        src="https://api.telegram.org/file/bot8228104804:AAG5ngi3-TGe3eIIP1PT7-L7Zky3AuLtW4s/videos/file_2.MOV"
-        type="video/mp4"
-      />
-    </video>
-
-    <div class="rating-bar" id="ratingBar">
-      <button class="rating-btn">-5</button>
-      <button class="rating-btn">-4</button>
-      <button class="rating-btn">-3</button>
-      <button class="rating-btn">-2</button>
-      <button class="rating-btn">-1</button>
-      <button class="rating-btn">0</button>
-      <button class="rating-btn">+1</button>
-      <button class="rating-btn">+2</button>
-      <button class="rating-btn">+3</button>
-      <button class="rating-btn">+4</button>
-      <button class="rating-btn">+5</button>
-    </div>
-
-    <script>
-      // 🎯 Реализация drag & move для ленты
-      const bar = document.getElementById("ratingBar");
-      let isDragging = false;
-      let startX, startY, startLeft, startTop;
-
-      const startDrag = (e) => {
-        isDragging = true;
-        bar.style.cursor = "grabbing";
-        const touch = e.touches ? e.touches[0] : e;
-        startX = touch.clientX;
-        startY = touch.clientY;
-        const rect = bar.getBoundingClientRect();
-        startLeft = rect.left;
-        startTop = rect.top;
-      };
-
-      const onDrag = (e) => {
-        if (!isDragging) return;
-        const touch = e.touches ? e.touches[0] : e;
-        const dx = touch.clientX - startX;
-        const dy = touch.clientY - startY;
-        bar.style.left = startLeft + dx + "px";
-        bar.style.top = startTop + dy + "px";
-        bar.style.transform = "translate(0, 0)";
-        bar.style.bottom = "auto";
-      };
-
-      const stopDrag = () => {
-        isDragging = false;
-        bar.style.cursor = "grab";
-      };
-
-      bar.addEventListener("mousedown", startDrag);
-      bar.addEventListener("touchstart", startDrag);
-      window.addEventListener("mousemove", onDrag);
-      window.addEventListener("touchmove", onDrag);
-      window.addEventListener("mouseup", stopDrag);
-      window.addEventListener("touchend", stopDrag);
-
-      // 🔘 обработка кнопок
-      const buttons = document.querySelectorAll(".rating-btn");
-      buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          buttons.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          console.log(`Оценка: ${btn.textContent}`);
-        });
-      });
-    </script>
-  </body>
-</html>
+<style>
+.rating-slider {
+  position: fixed;
+  bottom: 50px; left: 50%;
+  transform: translateX(-50%);
+  width: 70vw;
+  z-index: 10;
+}
+.rating-slider input[type=range] {
+  width: 100%;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.3);
+  outline: none;
+}
+.rating-slider input[type=range]::-webkit-slider-thumb {
+  appearance: none;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: grab;
+  transition: transform 0.1s;
+}
+.rating-slider input[type=range]:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+</style>
