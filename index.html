@@ -4,9 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Видео</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #000;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      video {
+        width: 100vw;     /* во всю ширину окна */
+        height: 100vh;    /* во всю высоту окна */
+        object-fit: cover; /* обрезает края, но заполняет экран */
+      }
+    </style>
   </head>
-  <body style="margin:0; background:black; display:flex; align-items:center; justify-content:center; height:100vh;">
-    <video autoplay muted controls style="width:90%; border-radius:10px;">
+  <body>
+    <video autoplay muted controls playsinline>
       <source
         src="https://api.telegram.org/file/bot8228104804:AAG5ngi3-TGe3eIIP1PT7-L7Zky3AuLtW4s/videos/file_2.MOV"
         type="video/mp4"
