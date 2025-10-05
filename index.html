@@ -15,15 +15,18 @@
         overflow: hidden;
       }
 
-      /* 🎬 Видео на фоне */
+      /* 🎬 Видео */
       video {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        object-fit: cover;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
         z-index: 1;
+        transition: all 0.3s ease;
       }
 
       /* 🎮 Контейнер слайдера */
@@ -40,7 +43,6 @@
         z-index: 10;
       }
 
-      /* 🔢 Цифра */
       .rating-value {
         font-size: 42px;
         font-weight: bold;
@@ -48,7 +50,6 @@
         transition: color 0.3s ease;
       }
 
-      /* 🎚️ Ползунок */
       input[type=range] {
         width: 100%;
         appearance: none;
@@ -81,9 +82,10 @@
       }
     </style>
   </head>
+
   <body>
     <!-- 🎥 Видео -->
-    <video autoplay muted playsinline loop>
+    <video id="video" autoplay muted playsinline loop>
       <source
         src="https://api.telegram.org/file/bot8228104804:AAG5ngi3-TGe3eIIP1PT7-L7Zky3AuLtW4s/videos/file_4.MP4"
         type="video/mp4"
@@ -99,13 +101,14 @@
     <script>
       const slider = document.getElementById("slider");
       const label = document.getElementById("ratingValue");
+      const video = document.getElementById("video");
 
-      // Функция для плавного перехода цвета от красного (-5) к зелёному (+5)
+      // 🎨 Цвет ползунка
       function getColor(value) {
-        const v = (Number(value) + 5) / 10; // нормализуем 0..1
-        const r = Math.round(255 * (1 - v)); // красный уменьшается
-        const g = Math.round(255 * v);       // зелёный увеличивается
-        return `rgb(${r},${g},80)`;          // немного синего для глубины
+        const v = (Number(value) + 5) / 10;
+        const r = Math.round(255 * (1 - v));
+        const g = Math.round(255 * v);
+        return `rgb(${r},${g},80)`;
       }
 
       const update = () => {
@@ -119,7 +122,22 @@
         // Telegram.WebApp.sendData(slider.value);
       });
 
-      update(); // начальная отрисовка
+      update();
+
+      // 📏 Определение ориентации видео и адаптация
+      video.addEventListener("loadedmetadata", () => {
+        const { videoWidth, videoHeight } = video;
+        const aspect = videoWidth / videoHeight;
+        if (aspect > 1) {
+          // горизонтальное
+          video.style.width = "100%";
+          video.style.height = "auto";
+        } else {
+          // вертикальное
+          video.style.width = "auto";
+          video.style.height = "100%";
+        }
+      });
     </script>
   </body>
 </html>
