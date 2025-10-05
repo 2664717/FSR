@@ -10,8 +10,8 @@ export default function VideoPlayer() {
 
   // 👇 видео-URL из старого index(1).html (актуальный)
   const VIDEO_URL =
-    "https://filesamples.com/samples/video/mp4/sample_640x360.mp4
-"; // ← та же ссылка
+  "https://filesamples.com/samples/video/mp4/sample_640x360.mp4"; // ✅ правильный вариант
+
 
   useEffect(() => {
     // Telegram WebApp SDK init
