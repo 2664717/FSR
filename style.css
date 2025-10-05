@@ -1,134 +1,92 @@
-/* Стили для рейтинга - исправленная версия */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+}
+
+video {
+  width: 100%;
+  height: auto;
+  max-height: 100vh;
+  border-radius: 12px;
+}
+
+/* --- Кнопка полноэкранного режима --- */
+.fullscreen-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  z-index: 10001;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 8px;
+  color: white;
+  font-size: 20px;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.fullscreen-btn:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+/* --- Контейнер рейтинга --- */
 .rating-container {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 95%;
-    max-width: 600px;
-    background: rgba(0, 0, 0, 0.95);
-    border-radius: 30px;
-    padding: 20px;
-    z-index: 10000; /* Очень высокий z-index */
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
+  position: absolute;
+  bottom: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10000;
+  pointer-events: none;
 }
 
+/* --- Ряд кнопок рейтинга --- */
 .rating-scroll {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 10px 5px;
-    min-height: 70px;
-    align-items: center;
-}
-
-.rating-scroll::-webkit-scrollbar {
-    display: none;
+  display: flex;
+  gap: 6px;
+  transform: rotate(-5deg);
 }
 
 .rating-btn {
-    flex: 0 0 auto;
-    width: 55px;
-    height: 55px;
-    border: none;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    font-size: 1.3rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(4px);
 }
 
 .rating-btn:hover {
-    transform: scale(1.15);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  background: rgba(255,255,255,0.4);
+  transform: scale(1.1);
 }
 
 .rating-btn.active {
-    background: linear-gradient(45deg, #ff3366, #ff6b35);
-    transform: scale(1.2);
-    box-shadow: 0 8px 25px rgba(255, 51, 102, 0.6);
-    border: 3px solid #ffffff;
+  background: #4caf50;
+  border-color: #81c784;
+  transform: scale(1.2);
 }
 
-.rating-btn.negative {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-}
-
-.rating-btn.positive {
-    background: linear-gradient(135deg, #51cf66, #2f9e44);
-}
-
-.rating-btn.zero {
-    background: linear-gradient(135deg, #74b9ff, #0984e3);
-}
+.rating-btn.negative { background: rgba(255, 0, 0, 0.25); }
+.rating-btn.positive { background: rgba(0, 255, 0, 0.25); }
+.rating-btn.zero     { background: rgba(255, 255, 255, 0.25); }
 
 .rating-label {
-    text-align: center;
-    color: white;
-    font-size: 1.1rem;
-    margin-top: 12px;
-    opacity: 0.9;
-    font-weight: 600;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Гарантируем, что ничего не перекрывает рейтинг */
-.controls {
-    bottom: 160px !important; /* Поднимаем контролы выше */
-    z-index: 100;
-}
-
-.swipe-area {
-    z-index: 1; /* Понижаем z-index области свайпа */
-}
-
-/* Мобильная адаптация */
-@media (max-width: 768px) {
-    .rating-container {
-        bottom: 20px;
-        width: 92%;
-        padding: 15px;
-    }
-    
-    .rating-btn {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-    }
-    
-    .rating-scroll {
-        gap: 10px;
-        min-height: 60px;
-    }
-    
-    .controls {
-        bottom: 140px !important;
-    }
-}
-
-@media (max-width: 480px) {
-    .rating-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 1.1rem;
-    }
-    
-    .rating-scroll {
-        gap: 8px;
-    }
-    
-    .rating-label {
-        font-size: 1rem;
-    }
+  margin-top: 8px;
+  color: rgba(255,255,255,0.8);
+  font-size: 14px;
+  text-shadow: 0 0 4px rgba(0,0,0,0.7);
 }
