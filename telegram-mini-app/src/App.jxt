@@ -1,0 +1,44 @@
+import { useEffect } from "react";
+
+function App() {
+  useEffect(() => {
+    const video = document.querySelector("video");
+    console.log("🎬 Video element:", video);
+
+    if (video) {
+      video.onerror = (e) => {
+        console.log("❌ Video error:", e);
+        alert("Ошибка загрузки видео. Проверь формат или ссылку.");
+      };
+    }
+  }, []);
+
+  return (
+    <div
+      style={{
+        background: "#000",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <video
+        id="videoPlayer"
+        autoPlay
+        muted
+        controls
+        playsInline
+        style={{ width: "90%", borderRadius: "10px" }}
+      >
+        <source
+          src="https://api.telegram.org/file/bot8228104804:AAG5ngi3-TGe3eIIP1PT7-L7Zky3AuLtW4s/videos/file_1.MOV"
+          type="video/quicktime"
+        />
+        Ваш браузер не поддерживает видео.
+      </video>
+    </div>
+  );
+}
+
+export default App;
