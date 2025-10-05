@@ -1,8 +1,9 @@
-name: Deploy to GitHub Pages
+name: Deploy Telegram Mini App
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
   build:
@@ -11,20 +12,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd telegram-mini-app
+          npm ci
 
-      - name: Build project
-        run: npm run build
+      - name: Build
+        run: |
+          cd telegram-mini-app
+          npm run build
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: telegram-mini-app/dist
