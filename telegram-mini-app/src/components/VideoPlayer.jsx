@@ -10,7 +10,8 @@ export default function VideoPlayer() {
 
   // 👇 видео-URL из старого index(1).html (актуальный)
   const VIDEO_URL =
-    "https://api.telegram.org/file/bot8228104804:AAG5ngi3-TGe3eIIP1PT7-L7Zky3AuLtW4s/videos/file_2.MOV"; // ← та же ссылка
+    "https://filesamples.com/samples/video/mp4/sample_640x360.mp4
+"; // ← та же ссылка
 
   useEffect(() => {
     // Telegram WebApp SDK init
