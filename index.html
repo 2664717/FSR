@@ -18,9 +18,9 @@
       /* 🎬 Видео */
       video {
         position: fixed;
-        top: 50%;
+        top: 0;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translateX(-50%);
         width: 100%;
         height: auto;
         max-height: 100%;
@@ -128,14 +128,19 @@
       video.addEventListener("loadedmetadata", () => {
         const { videoWidth, videoHeight } = video;
         const aspect = videoWidth / videoHeight;
+
         if (aspect > 1) {
-          // горизонтальное
+          // Горизонтальное — тянем по ширине, верх вплотную
           video.style.width = "100%";
           video.style.height = "auto";
+          video.style.top = "0";
+          video.style.transform = "translateX(-50%)";
         } else {
-          // вертикальное
+          // Вертикальное — тянем по высоте, центрируем
           video.style.width = "auto";
           video.style.height = "100%";
+          video.style.top = "50%";
+          video.style.transform = "translate(-50%, -50%)";
         }
       });
     </script>
