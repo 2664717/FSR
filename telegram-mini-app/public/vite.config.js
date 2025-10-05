@@ -3,6 +3,5 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/telegram-mini-app/", // имя репозитория
+  base: "/FSR/", // 👈 имя репозитория на GitHub
 });
-
