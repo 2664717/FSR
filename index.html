@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Видео с рейтингом</title>
+    <title>Видео с двигаемой лентой рейтинга</title>
     <style>
       html, body {
         margin: 0;
@@ -15,7 +15,6 @@
         overflow: hidden;
       }
 
-      /* 🎬 Видео на фоне */
       video {
         position: fixed;
         top: 0;
@@ -25,37 +24,29 @@
         object-fit: cover;
         border: none;
         outline: none;
-        display: block;
         z-index: 1;
       }
 
-      /* ⭐ Контейнер ленты рейтинга */
+      /* ⭐ Лента рейтинга */
       .rating-bar {
         position: fixed;
-        bottom: 30px;
+        bottom: 40px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
-        overflow-x: auto;        /* 👈 горизонтальная прокрутка */
-        gap: 8px;
+        gap: 10px;
         background: rgba(0, 0, 0, 0.45);
         padding: 10px 12px;
         border-radius: 12px;
         backdrop-filter: blur(8px);
         z-index: 10;
-        max-width: 90vw;         /* не шире окна */
-        scroll-behavior: smooth; /* плавная прокрутка */
+        max-width: 90vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        cursor: grab;
+        touch-action: none; /* важно для мобильных */
       }
 
-      .rating-bar::-webkit-scrollbar {
-        height: 4px;
-      }
-      .rating-bar::-webkit-scrollbar-thumb {
-        background: rgba(255,255,255,0.3);
-        border-radius: 2px;
-      }
-
-      /* 🔘 Кнопки рейтинга */
       .rating-btn {
         flex: 0 0 auto;
         background: rgba(255, 255, 255, 0.15);
@@ -66,10 +57,6 @@
         font-size: 16px;
         cursor: pointer;
         transition: all 0.2s ease;
-      }
-
-      .rating-btn:hover {
-        background: rgba(255, 255, 255, 0.3);
       }
 
       .rating-btn.active {
@@ -87,7 +74,6 @@
       />
     </video>
 
-    <!-- ⭐ Лента рейтинга (-5 … +5) -->
     <div class="rating-bar" id="ratingBar">
       <button class="rating-btn">-5</button>
       <button class="rating-btn">-4</button>
@@ -103,13 +89,52 @@
     </div>
 
     <script>
-      const buttons = document.querySelectorAll('.rating-btn');
-      buttons.forEach(btn => {
-        btn.addEventListener('click', () => {
-          buttons.forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          alert(`Оценка: ${btn.textContent}`);
-          // 👉 Здесь можно вызвать Telegram.WebApp.sendData(btn.textContent)
+      // 🎯 Реализация drag & move для ленты
+      const bar = document.getElementById("ratingBar");
+      let isDragging = false;
+      let startX, startY, startLeft, startTop;
+
+      const startDrag = (e) => {
+        isDragging = true;
+        bar.style.cursor = "grabbing";
+        const touch = e.touches ? e.touches[0] : e;
+        startX = touch.clientX;
+        startY = touch.clientY;
+        const rect = bar.getBoundingClientRect();
+        startLeft = rect.left;
+        startTop = rect.top;
+      };
+
+      const onDrag = (e) => {
+        if (!isDragging) return;
+        const touch = e.touches ? e.touches[0] : e;
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+        bar.style.left = startLeft + dx + "px";
+        bar.style.top = startTop + dy + "px";
+        bar.style.transform = "translate(0, 0)";
+        bar.style.bottom = "auto";
+      };
+
+      const stopDrag = () => {
+        isDragging = false;
+        bar.style.cursor = "grab";
+      };
+
+      bar.addEventListener("mousedown", startDrag);
+      bar.addEventListener("touchstart", startDrag);
+      window.addEventListener("mousemove", onDrag);
+      window.addEventListener("touchmove", onDrag);
+      window.addEventListener("mouseup", stopDrag);
+      window.addEventListener("touchend", stopDrag);
+
+      // 🔘 обработка кнопок
+      const buttons = document.querySelectorAll(".rating-btn");
+      buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          buttons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          console.log(`Оценка: ${btn.textContent}`);
         });
       });
     </script>
