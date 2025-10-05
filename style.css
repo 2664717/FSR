@@ -2,75 +2,75 @@ html, body {
   margin: 0;
   padding: 0;
   background: black;
+  height: 100%;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+}
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
 }
 
 video {
   width: 100%;
-  height: auto;
-  max-height: 100vh;
-  border-radius: 12px;
+  height: 100%;
+  object-fit: contain;
+  background: black;
 }
 
-/* --- Кнопка полноэкранного режима --- */
-.fullscreen-btn {
-  position: fixed;
-  top: 15px;
-  right: 15px;
-  z-index: 10001;
-  background: rgba(255,255,255,0.15);
-  border: 2px solid rgba(255,255,255,0.4);
-  border-radius: 8px;
-  color: white;
-  font-size: 20px;
-  padding: 8px 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.fullscreen-btn:hover {
-  background: rgba(255,255,255,0.35);
-}
-
-/* --- Контейнер рейтинга --- */
+/* --- Панель рейтинга --- */
 .rating-container {
   position: absolute;
-  bottom: 8vh;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 6vh;
+  left: 0;
+  width: 100%;
+  overflow-x: auto;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 10000;
+  justify-content: center;
   pointer-events: none;
 }
 
-/* --- Ряд кнопок рейтинга --- */
 .rating-scroll {
   display: flex;
-  gap: 6px;
-  transform: rotate(-5deg);
+  gap: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  pointer-events: auto;
+}
+
+.rating-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .rating-btn {
-  pointer-events: auto;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.4);
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  font-size: 15px;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(4px);
 }
 
+.rating-btn.negative { background: rgba(255, 0, 0, 0.25); }
+.rating-btn.positive { background: rgba(0, 255, 0, 0.25); }
+.rating-btn.zero     { background: rgba(255, 255, 255, 0.25); }
+
 .rating-btn:hover {
-  background: rgba(255,255,255,0.4);
   transform: scale(1.1);
 }
 
@@ -80,13 +80,22 @@ video {
   transform: scale(1.2);
 }
 
-.rating-btn.negative { background: rgba(255, 0, 0, 0.25); }
-.rating-btn.positive { background: rgba(0, 255, 0, 0.25); }
-.rating-btn.zero     { background: rgba(255, 255, 255, 0.25); }
+/* --- Кнопка fullscreen --- */
+.fullscreen-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.4);
+  color: white;
+  font-size: 22px;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 
-.rating-label {
-  margin-top: 8px;
-  color: rgba(255,255,255,0.8);
-  font-size: 14px;
-  text-shadow: 0 0 4px rgba(0,0,0,0.7);
+.fullscreen-btn:hover {
+  background: rgba(255,255,255,0.4);
 }
