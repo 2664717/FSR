@@ -1,19 +1,104 @@
-cat > index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Видео</title>
-  </head>
-  <body style="margin:0; background:black; display:flex; align-items:center; justify-content:center; height:100vh;">
-    <video autoplay muted controls style="width:90%; border-radius:10px;">
-      <source
-        src="https://api.telegram.org/file/bot8228104804:AAG5ngi3-TGe3eIIP1PT7-L7Zky3AuLtW4s/videos/file_2.MOV"
-        type="video/mp4"
-      />
-      Ваш браузер не поддерживает видео.
-    </video>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Видео с рейтингом</title>
+  <link rel="stylesheet" href="style(1).css" />
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      max-height: 100vh;
+      border-radius: 12px;
+    }
+    .fullscreen-btn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 10001;
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 8px;
+      color: white;
+      font-size: 20px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .fullscreen-btn:hover {
+      background: rgba(255,255,255,0.35);
+    }
+  </style>
+</head>
+<body>
+  <video id="videoPlayer" autoplay muted controls playsinline>
+    <source src="https://api.telegram.org/file/bot8228104804:AAG5ngi3-TGe3eIIP1PT7-L7Zky3AuLtW4s/videos/file_1.MOV" type="video/mp4" />
+    Ваш браузер не поддерживает видео.
+  </video>
+
+  <!-- Рейтинг -->
+  <div class="rating-container">
+    <div class="rating-scroll" id="ratingScroll">
+      <button class="rating-btn negative">-5</button>
+      <button class="rating-btn negative">-4</button>
+      <button class="rating-btn negative">-3</button>
+      <button class="rating-btn negative">-2</button>
+      <button class="rating-btn negative">-1</button>
+      <button class="rating-btn zero">0</button>
+      <button class="rating-btn positive">1</button>
+      <button class="rating-btn positive">2</button>
+      <button class="rating-btn positive">3</button>
+      <button class="rating-btn positive">4</button>
+      <button class="rating-btn positive">5</button>
+    </div>
+    <div class="rating-label">Оцените видео: -5 до +5</div>
+  </div>
+
+  <!-- Кнопка полноэкранного режима -->
+  <button id="fullscreenBtn" class="fullscreen-btn">⛶</button>
+
+  <script>
+    const video = document.getElementById("videoPlayer");
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const ratingButtons = document.querySelectorAll(".rating-btn");
+    let currentRating = null;
+
+    // --- Поведение рейтинга ---
+    ratingButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const value = parseInt(btn.textContent);
+        if (currentRating === value) {
+          currentRating = null;
+          btn.classList.remove("active");
+        } else {
+          currentRating = value;
+          ratingButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+        }
+
+        // Заглушка: отправка рейтинга на сервер
+        console.log("Отправка рейтинга:", currentRating);
+        // Здесь позже будет fetch("https://api.yourserver.com/rating", { method: "POST", body: JSON.stringify({ rating: currentRating }) })
+      });
+    });
+
+    // --- Полноэкранный режим ---
+    fullscreenBtn.addEventListener("click", () => {
+      if (!document.fullscreenElement) {
+        video.requestFullscreen().catch(err => console.log(err));
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  </script>
+</body>
 </html>
-EOF
